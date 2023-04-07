@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
-using CatolicoCantorAPI.ViewModels.Playlist.Set;
 using CatolicoCantorAPI.ViewModels.Playlist.Get;
+using CatolicoCantorAPI.ViewModels.Playlist.Set;
 
 namespace CatolicoCantorAPI.Implementation;
 public class PlaylistManager : IPlaylistManager
@@ -23,6 +23,7 @@ public class PlaylistManager : IPlaylistManager
     public async Task<PlaylistGet> PostPlaylist(CreatePlaylistViewModel model)
     {
         var category = mapper.Map<Playlist>(model);
+
         var retorno = mapper.Map<PlaylistGet>(await repository.PostPlaylist(category));
         return retorno;
     }

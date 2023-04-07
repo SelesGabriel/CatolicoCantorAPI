@@ -7,6 +7,9 @@ using CatolicoCantorAPI.Repository;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 builder.Services.AddCors(o => o.AddPolicy("MyPolicy", b =>
 {
     b.AllowAnyOrigin()
@@ -22,13 +25,18 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddDbContext<AppDbContext>();
 
 
-builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
-builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<IMusicRepository, MusicRepository>();
 builder.Services.AddScoped<IMusicManager, MusicManager>();
 builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 builder.Services.AddScoped<IPlaylistManager, PlaylistManager>();
 builder.Services.AddAutoMapper(typeof(CategoryMap),typeof(MusicMap),typeof(PlaylistMap));
+
+
+
+builder.Services.AddSingleton(new DatabaseConfig { Name = builder.Configuration["DatabaseName"] });
+builder.Services.AddSingleton<IDatabaseBootstrap, DatabaseBootstrap>();
+builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
+builder.Services.AddSingleton<ICategoryManager, CategoryManager>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

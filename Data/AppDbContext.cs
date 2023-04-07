@@ -16,9 +16,6 @@ namespace CatolicoCantorAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Music>();
-            modelBuilder.Entity<Playlist>();
-            modelBuilder.Entity<Category>();
         }
     }
 }

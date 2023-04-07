@@ -12,13 +12,13 @@ namespace CatolicoCantorAPI.Repository
         {
             this.db = db;
         }
-        public async Task<List<Music>> GetAllMusics() => await db.Musics.Include(x=>x.Categories).ToListAsync();
-        public async Task<Music?> GetMusicById(int id) => await db.Musics.Include(x => x.Categories).FirstAsync(x=>x.Id == id);
+        public async Task<List<Music>> GetAllMusics() => await db.Musics.Include(x=>x.Categories).AsNoTracking().ToListAsync();
+        public async Task<Music?> GetMusicById(int id) => await db.Musics.Include(x => x.Categories).AsNoTracking().FirstAsync(x=>x.MusicId == id);
 
 
         public async Task<Music> PostMusic(Music model)
         {
-            await db.AddAsync(model);
+            await db.Musics.AddAsync(model);
             await db.SaveChangesAsync();
             return model;
         }

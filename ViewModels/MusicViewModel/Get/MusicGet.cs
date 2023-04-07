@@ -1,10 +1,10 @@
-﻿using CatolicoCantorAPI.ViewModels.Category.Get;
+﻿using CatolicoCantorAPI.ViewModels.CategoryViewModel.Get;
 
 namespace CatolicoCantorAPI.ViewModels.Music.Get
 {
     public class MusicGet
     {
-        public int Id { get; set; }
+        public int MusicId { get; set; }
         public string Nome { get; set; }
         public string Cantor { get; set; }
         public string Letra { get; set; }

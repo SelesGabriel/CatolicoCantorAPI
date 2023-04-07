@@ -1,4 +1,6 @@
 ﻿using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Get;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 
 namespace CatolicoCantorAPI.ViewModels.Music.Set
 {
@@ -10,6 +12,6 @@ namespace CatolicoCantorAPI.ViewModels.Music.Set
         public string Cifra { get; set; }
         public string Youtube { get; set; }
         public string Tags { get; set; }
-        public List<int> idCategorias { get; set; }
+        public List<IncludeCategoryMusic> Categories { get; set; }
     }
 }

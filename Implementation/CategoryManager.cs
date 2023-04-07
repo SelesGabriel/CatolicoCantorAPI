@@ -2,10 +2,11 @@
 using CatolicoCantorAPI.Data;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
-using CatolicoCantorAPI.ViewModels.Category.Get;
-using CatolicoCantorAPI.ViewModels.Category.Set;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Get;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace CatolicoCantorAPI.Implementation;
 
@@ -20,23 +21,18 @@ public class CategoryManager : ICategoryManager
     }
 
 
-    public async Task<List<CategoryGet>> GetAllCategories() => mapper.Map<List<CategoryGet>>(await repository.GetAllCategories());
-
-    public async Task<CategoryGet> GetCategoryById(int id) => mapper.Map<CategoryGet>(await repository.GetCategoryById(id));
-
-    public async Task<CategoryGet> PostCategory(CreateCategoryViewModel model)
-    {
-        var category = mapper.Map<Category>(model);
-        var retorno = mapper.Map<CategoryGet>(await repository.PostCategory(category));
-        return retorno;
+    public async Task<IEnumerable<Category>> GetAllCategories() { 
+       var teste  =  await repository.GetAllCategories();
+        return teste;
     }
 
-    public async Task<CategoryGet> PutCategory(CreateCategoryViewModel model)
+    public async Task<Category> GetCategoryById(int id)
     {
-        throw new NotImplementedException();
+        return await repository.GetCategoryById(id);
     }
-    public async Task<CategoryGet> DeleteCategory(int id)
+
+    public async Task<string> PostCategory(Category category)
     {
-        throw new NotImplementedException();
+        return await repository.PostCategory(category);
     }
 }

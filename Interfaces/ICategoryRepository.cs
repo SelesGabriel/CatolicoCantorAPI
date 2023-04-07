@@ -1,16 +1,13 @@
 ﻿using CatolicoCantorAPI.Models;
-using CatolicoCantorAPI.ViewModels.Category.Set;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 
 namespace CatolicoCantorAPI.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<List<Category>> GetAllCategories();
+        Task<IEnumerable<Category>> GetAllCategories();
+        Task<string> PostCategory(Category category);
+
         Task<Category> GetCategoryById(int id);
-
-        Task<Category> PostCategory(Category model);
-        Task<Category> PutCategory(Category model);
-
-        Task<Category> DeleteCategory(int id);
     }
 }

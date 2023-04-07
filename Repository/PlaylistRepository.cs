@@ -12,8 +12,8 @@ namespace CatolicoCantorAPI.Repository
         {
             this.db = db;
         }
-        public async Task<List<Playlist>> GetAllPlaylists() => await db.Playlists.Include(x => x.Musics).ToListAsync();
-        public async Task<Playlist?> GetPlaylistById(int id) => await db.Playlists.Include(x => x.Musics).FirstAsync(x => x.Id == id);
+        public async Task<List<Playlist>> GetAllPlaylists() => await db.Playlists.Include(x => x.Musics).AsNoTracking().ToListAsync();
+        public async Task<Playlist?> GetPlaylistById(int id) => await db.Playlists.Include(x => x.Musics).AsNoTracking().FirstAsync(x => x.PlaylistId == id);
 
 
         public async Task<Playlist> PostPlaylist(Playlist model)

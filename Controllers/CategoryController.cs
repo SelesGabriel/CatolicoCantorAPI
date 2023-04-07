@@ -1,5 +1,6 @@
 ﻿using CatolicoCantorAPI.Interfaces;
-using CatolicoCantorAPI.ViewModels.Category.Set;
+using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatolicoCantorAPI.Controllers;
@@ -20,10 +21,16 @@ public class CategoryController : ControllerBase
         return Ok(await categoryManager.GetAllCategories());
     }
 
-    [HttpPost, Route("category")]
-    public async Task<IActionResult> PostMusic([FromBody]CreateCategoryViewModel model)
+    [HttpGet,Route("category")]
+    public async Task<IActionResult> GetCategoryById([FromHeader]int id)
     {
-        return Ok(await categoryManager.PostCategory(model));
+        return Ok(await categoryManager.GetCategoryById(id));
+    }
+
+    [HttpPost,Route("category")]
+    public async Task<IActionResult> PostCategory([FromBody]Category category)
+    {
+        return Ok(await categoryManager.PostCategory(category));
     }
 
 }

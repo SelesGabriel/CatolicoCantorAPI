@@ -1,5 +1,5 @@
-﻿using CatolicoCantorAPI.ViewModels.Category.Get;
-using CatolicoCantorAPI.ViewModels.Category.Set;
+﻿using CatolicoCantorAPI.ViewModels.CategoryViewModel.Get;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 using CatolicoCantorAPI.ViewModels.Music.Get;
 using CatolicoCantorAPI.ViewModels.Music.Set;
 

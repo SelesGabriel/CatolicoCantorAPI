@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CatolicoCantorAPI.Models;
 using CatolicoCantorAPI.ViewModels;
+using CatolicoCantorAPI.ViewModels.Music.Set;
 using CatolicoCantorAPI.ViewModels.Playlist.Get;
 using CatolicoCantorAPI.ViewModels.Playlist.Set;
 
@@ -12,8 +13,11 @@ namespace CatolicoCantorAPI.Mapping
         {
             CreateMap<PlaylistGet, Playlist>();
             CreateMap<Playlist, PlaylistGet>();
-            CreateMap<Playlist, CreatePlaylistViewModel>().ForMember(x=>x.idMusics, map=>map.MapFrom(x=>x.Musics.Select(x=>x.Id)));
+            CreateMap<Playlist, CreatePlaylistViewModel>();
             CreateMap<CreatePlaylistViewModel, Playlist>();
+            CreateMap<Playlist, IncludeMusicPlaylist>();
+            CreateMap<Playlist, CreatePlaylistViewModel>();
+
         }
     }
 }
