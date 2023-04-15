@@ -2,6 +2,6 @@
 
 public class Category
 {
-    public int Id { get; set; }
+    public int IdCategory { get; set; }
     public string? Name { get; set; }
 }

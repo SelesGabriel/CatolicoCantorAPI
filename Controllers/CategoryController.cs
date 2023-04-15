@@ -28,7 +28,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost,Route("category")]
-    public async Task<IActionResult> PostCategory([FromBody]Category category)
+    public async Task<IActionResult> PostCategory([FromBody]CreateCategoryViewModel category)
     {
         return Ok(await categoryManager.PostCategory(category));
     }

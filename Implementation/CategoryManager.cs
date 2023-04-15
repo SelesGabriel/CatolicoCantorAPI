@@ -31,7 +31,7 @@ public class CategoryManager : ICategoryManager
         return await repository.GetCategoryById(id);
     }
 
-    public async Task<string> PostCategory(Category category)
+    public async Task<string> PostCategory(CreateCategoryViewModel category)
     {
         return await repository.PostCategory(category);
     }

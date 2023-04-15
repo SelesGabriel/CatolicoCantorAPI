@@ -1,6 +1,7 @@
 ﻿using CatolicoCantorAPI.Interfaces;
 using Dapper;
 using Microsoft.Data.Sqlite;
+using MySql.Data.MySqlClient;
 using System.Linq;
 
 
@@ -17,7 +18,7 @@ namespace CatolicoCantorAPI.Data
 
         public void Setup()
         {
-            using var connection = new SqliteConnection(databaseConfig.Name);
+            using var connection = new MySqlConnection(databaseConfig.Name);
 
             var table = connection.Query<string>("SELECT name FROM sqlite_master WHERE type='table' AND name = 'Category';");
             var tableName = table.FirstOrDefault();

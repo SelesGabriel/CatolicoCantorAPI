@@ -1,9 +1,11 @@
 ﻿using CatolicoCantorAPI.Data;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace CatolicoCantorAPI.Repository
 {
@@ -26,30 +28,30 @@ namespace CatolicoCantorAPI.Repository
 
         public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            using var connection = new SqliteConnection(databaseConfig.Name);
-            var teste = await connection.QueryAsync<Category>("select * from Category");
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            var teste = await connection.QueryAsync<Category>("select IdCategory, Name from Category");
             return teste;
         }
 
         public async Task<Category> GetCategoryById(int id)
         {
-            using var connection = new SqliteConnection(databaseConfig.Name);
-            var cat= await connection.QuerySingleAsync<Category>($"select id, name from Category where id = {id}");
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            var cat= await connection.QuerySingleAsync<Category>($"select IdCategory, Name from Category where idCategory = {id}");
             if(cat == null)
                 return null;
             return cat;
         }
 
-        public async Task<string> PostCategory(Category model)
+        public async Task<string> PostCategory(CreateCategoryViewModel model)
         {
-            using var connection = new SqliteConnection(databaseConfig.Name);
-            category = await connection.QueryAsync<Category>($"SELECT Id, Name FROM Category WHERE Name = '{model.Name}'");
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            category = await connection.QueryAsync<Category>($"SELECT IdCategory, Name FROM Category WHERE Name = '{model.Name}'");
             if (!category.Any())
             {
                 await connection.ExecuteAsync($"INSERT INTO Category (Name) VALUES ('{model.Name}')");
-                return $"Categoria {model.Name} criada com sucesso.";
+                return $"Categoria '{model.Name}' criada com sucesso.";
             }
-            return $"Já existe a categoria '{category.First().Name}' com o id '{category.First().Id}'";
+            return $"Já existe a categoria '{category.First().Name}' com o id '{category.First().IdCategory}'";
         }
 
 

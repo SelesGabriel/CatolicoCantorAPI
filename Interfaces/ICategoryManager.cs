@@ -1,4 +1,5 @@
 ﻿using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.CategoryViewModel.Set;
 
 namespace CatolicoCantorAPI.Interfaces
 {
@@ -6,7 +7,7 @@ namespace CatolicoCantorAPI.Interfaces
     {
 
         Task<IEnumerable<Category>> GetAllCategories();
-        Task<string> PostCategory(Category category);
+        Task<string> PostCategory(CreateCategoryViewModel category);
         Task<Category> GetCategoryById(int id);
     }
 }
