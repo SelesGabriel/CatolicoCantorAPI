@@ -1,15 +1,12 @@
 ﻿using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.Music.Set;
 
 namespace CatolicoCantorAPI.Interfaces
 {
     public interface IMusicRepository
     {
-        Task<List<Music>> GetAllMusics();
+        Task<IEnumerable<Music>> GetAllMusics();
         Task<Music> GetMusicById(int id);
-
-        Task<Music> PostMusic(Music model);
-        Task<Music> PutMusic(Music model);
-
-        Task<Music> DeleteMusic(int id);
+        Task<string> PostMusic(CreateMusicViewModel model);
     }
 }

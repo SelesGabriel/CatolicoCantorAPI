@@ -17,26 +17,17 @@ namespace CatolicoCantorAPI.Repository
         {
             this.databaseConfig = databaseConfig;
         }
-
-        public async Task Create(Category product)
-        {
-            using var connection = new SqliteConnection(databaseConfig.Name);
-
-            await connection.ExecuteAsync("INSERT INTO Product (Name, Description)" +
-                "VALUES (@Name, @Description);", product);
-        }
-
         public async Task<IEnumerable<Category>> GetAllCategories()
         {
             using var connection = new MySqlConnection(databaseConfig.Name);
-            var teste = await connection.QueryAsync<Category>("select IdCategory, Name from Category");
+            var teste = await connection.QueryAsync<Category>("select Id, Nome from Category");
             return teste;
         }
 
         public async Task<Category> GetCategoryById(int id)
         {
             using var connection = new MySqlConnection(databaseConfig.Name);
-            var cat= await connection.QuerySingleAsync<Category>($"select IdCategory, Name from Category where idCategory = {id}");
+            var cat= await connection.QuerySingleAsync<Category>($"select Id, Nome from Category where Id = {id}");
             if(cat == null)
                 return null;
             return cat;
@@ -45,13 +36,13 @@ namespace CatolicoCantorAPI.Repository
         public async Task<string> PostCategory(CreateCategoryViewModel model)
         {
             using var connection = new MySqlConnection(databaseConfig.Name);
-            category = await connection.QueryAsync<Category>($"SELECT IdCategory, Name FROM Category WHERE Name = '{model.Name}'");
+            category = await connection.QueryAsync<Category>($"SELECT Id, Nome FROM Category WHERE Nome = '{model.Nome}'");
             if (!category.Any())
             {
-                await connection.ExecuteAsync($"INSERT INTO Category (Name) VALUES ('{model.Name}')");
-                return $"Categoria '{model.Name}' criada com sucesso.";
+                await connection.ExecuteAsync($"INSERT INTO Category (Nome) VALUES ('{model.Nome}')");
+                return $"Categoria '{model.Nome}' criada com sucesso.";
             }
-            return $"Já existe a categoria '{category.First().Name}' com o id '{category.First().IdCategory}'";
+            return $"Já existe a categoria '{category.First().Nome}' com o id '{category.First().Id}'";
         }
 
 

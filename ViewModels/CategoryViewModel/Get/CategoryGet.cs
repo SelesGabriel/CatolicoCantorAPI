@@ -3,6 +3,6 @@
     public class CategoryGet
     {
         public int CategoryId { get; set; }
-        public string Name { get; set; }
+        public string Nome { get; set; }
     }
 }

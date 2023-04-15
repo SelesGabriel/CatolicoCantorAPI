@@ -15,24 +15,18 @@ public class MusicManager : IMusicManager
         this.mapper = mapper;
     }
 
-
-    public async Task<List<MusicGet>> GetAllMusics() => mapper.Map<List<MusicGet>>(await repository.GetAllMusics());
-
-    public async Task<MusicGet> GetMusicById(int id) => mapper.Map<MusicGet>(await repository.GetMusicById(id));
-
-    public async Task<MusicGet> PostMusic(CreateMusicViewModel model)
+    public async Task<IEnumerable<Music>> GetAllMusics()
     {
-        var category = mapper.Map<Music>(model);
-        var retorno = mapper.Map<MusicGet>(await repository.PostMusic(category));
-        return retorno;
+        return await repository.GetAllMusics();
     }
 
-    public async Task<MusicGet> PutMusic(CreateMusicViewModel model)
+    public async Task<Music> GetMusicById(int id)
     {
-        throw new NotImplementedException();
+        return await repository.GetMusicById(id);
     }
-    public async Task<MusicGet> DeleteMusic(int id)
+
+    public async Task<string> PostMusic(CreateMusicViewModel model)
     {
-        throw new NotImplementedException();
+        return await repository.PostMusic(model);
     }
 }

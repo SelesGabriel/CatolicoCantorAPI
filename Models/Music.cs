@@ -5,7 +5,7 @@ namespace CatolicoCantorAPI.Models;
 public class Music
 {
     [Key]
-    public int MusicId { get; set; }
+    public int Id { get; set; }
     public string? Nome { get; set; }
     public string? Cantor { get; set; }
     public string? Letra { get; set; }

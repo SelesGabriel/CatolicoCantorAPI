@@ -23,6 +23,12 @@ public class MusicController : ControllerBase
         return Ok(await musicManager.GetAllMusics());
     }
 
+    [HttpGet, Route("music")]
+    public async Task<IActionResult> GetMusicById([FromHeader]int id)
+    {
+        return Ok(await musicManager.GetMusicById(id));
+    }
+
     [HttpPost, Route("music")]
     public async Task<IActionResult> PostMusic([FromBody] CreateMusicViewModel model)
     {

@@ -24,10 +24,12 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddDbContext<AppDbContext>();
 
 
-builder.Services.AddSingleton<IDatabaseBootstrap, DatabaseBootstrap>();
 builder.Services.AddSingleton(new DatabaseConfig { Name = builder.Configuration.GetConnectionString("DefaultConnection") });
-builder.Services.AddScoped<IMusicRepository, MusicRepository>();
+
+builder.Services.AddSingleton<IDatabaseBootstrap, DatabaseBootstrap>();
 builder.Services.AddScoped<IMusicManager, MusicManager>();
+builder.Services.AddScoped<IMusicRepository, MusicRepository>();
+
 builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
 builder.Services.AddScoped<IPlaylistManager, PlaylistManager>();
 builder.Services.AddAutoMapper(typeof(CategoryMap),typeof(MusicMap),typeof(PlaylistMap));
@@ -51,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.Services.GetService<IDatabaseBootstrap>().Setup();
 
 app.UseCors("MyPolicy");
 app.UseHttpsRedirection();
