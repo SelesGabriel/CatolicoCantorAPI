@@ -48,7 +48,11 @@ namespace CatolicoCantorAPI.Data
                                     ,DataCriacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                                     );");
 
+            if (string.IsNullOrEmpty(musicCategory.FirstOrDefault()))
+                connection.Execute(@"Create table musicCategory (IdMusic INTEGER NOT NULL, IdCategory INTEGER NOT NULL)");
 
+            if (string.IsNullOrEmpty(musicPlaylist.FirstOrDefault()))
+                connection.Execute(@"Create table musicPlaylist (IdMusic INTEGER NOT NULL, IdPlaylist INTEGER NOT NULL)");
         }
     }
 }

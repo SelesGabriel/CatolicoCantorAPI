@@ -14,6 +14,5 @@ public class Music
     public string? Tags { get; set; }
 
 
-    public ICollection<Category> Categories { get; set; }
-    public ICollection<Playlist> Playlists { get; set; }
+    public List<Category> Categories { get; set; } = new List<Category> { };
 }
