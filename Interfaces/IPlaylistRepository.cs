@@ -1,15 +1,13 @@
 ﻿using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.Playlist.Set;
 
 namespace CatolicoCantorAPI.Interfaces
 {
     public interface IPlaylistRepository
     {
-        Task<List<Playlist>> GetAllPlaylists();
+        Task<IEnumerable<Playlist>> GetAllPlaylists();
         Task<Playlist> GetPlaylistById(int id);
-
-        Task<Playlist> PostPlaylist(Playlist model);
-        Task<Playlist> PutPlaylist(Playlist model);
-
-        Task<Playlist> DeletePlaylist(int id);
+        Task<string> PostPlaylist(CreatePlaylistViewModel model);
+        Task<string> IncludeMusicToPlaylist(int idMusic, int idPlaylist);
     }
 }

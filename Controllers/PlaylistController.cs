@@ -1,9 +1,11 @@
 ﻿using CatolicoCantorAPI.Data;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.Music.Set;
 using CatolicoCantorAPI.ViewModels.Playlist.Set;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mysqlx;
 
 namespace CatolicoCantorAPI.Controllers;
 
@@ -17,16 +19,22 @@ public class PlaylistController : ControllerBase
         this.playlistManager = playlistManager;
     }
     [HttpGet, Route("playlists")]
-    public async Task<IActionResult> GetMusics()
+    public async Task<IActionResult> GetPlaylists()
     {
         var playlist = await playlistManager.GetAllPlaylists();
         return Ok(playlist);
     }
 
     [HttpPost, Route("playlist")]
-    public async Task<IActionResult> PostMusic([FromBody] CreatePlaylistViewModel model)
+    public async Task<string> PostPlaylist([FromBody] CreatePlaylistViewModel model)
     {
         var playlist = await playlistManager.PostPlaylist(model);
-        return Ok(playlist);
+        return playlist;
+    }
+
+    [HttpPost,Route("includemusic")]
+    public async Task<IActionResult> IncludeMusicToPlaylist([FromBody] IncludeMusicPlaylist model)
+    {
+        return Ok(await playlistManager.IncludeMusicToPlaylist(model.MusicId, model.PlaylistId));
     }
 }

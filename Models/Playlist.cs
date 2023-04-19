@@ -11,5 +11,5 @@ public class Playlist
     public bool Publica { get; set; }
     public DateTime DataCriacao { get; set; }
 
-    public ICollection<Music>? Musics { get; set; }
+    public List<Music> Musics { get; set; } = new List<Music> { };
 }

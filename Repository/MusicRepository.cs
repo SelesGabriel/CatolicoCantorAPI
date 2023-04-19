@@ -64,9 +64,9 @@ namespace CatolicoCantorAPI.Repository
 
                 foreach (var idCategory in model.Categories)
                 {
-                    if (idCategory > categoryMaxId)
+                    if (idCategory.Id > categoryMaxId)
                         return $"Categoria com o id {idCategory} não existe. Remova esse id e continue.";
-                    await connection.ExecuteAsync($"insert into musicCategory (IdMusic, IdCategory) VALUES ({idMusic},{idCategory})");
+                    await connection.ExecuteAsync($"insert into musicCategory (IdMusic, IdCategory) VALUES ({idMusic},{idCategory.Id})");
                 }
 
                 return $"Musica '{model.Nome}' criada com sucesso.";

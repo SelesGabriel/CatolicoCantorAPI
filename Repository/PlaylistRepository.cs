@@ -1,35 +1,72 @@
 ﻿using CatolicoCantorAPI.Data;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.Playlist.Set;
+using CatolicoCantorAPI.ViewModels.PlaylistViewModel.Get;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace CatolicoCantorAPI.Repository
 {
     public class PlaylistRepository : IPlaylistRepository
     {
-        readonly AppDbContext db;
-        public PlaylistRepository(AppDbContext db)
+        private readonly DatabaseConfig databaseConfig;
+        public PlaylistRepository(DatabaseConfig databaseConfig)
         {
-            this.db = db;
+            this.databaseConfig = databaseConfig;
         }
-        public async Task<List<Playlist>> GetAllPlaylists() => await db.Playlists.Include(x => x.Musics).AsNoTracking().ToListAsync();
-        public async Task<Playlist?> GetPlaylistById(int id) => await db.Playlists.Include(x => x.Musics).AsNoTracking().FirstAsync(x => x.Id == id);
-
-
-        public async Task<Playlist> PostPlaylist(Playlist model)
+        public async Task<IEnumerable<Playlist>> GetAllPlaylists()
         {
-            await db.AddAsync(model);
-            await db.SaveChangesAsync();
-            return model;
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            var musics = await connection.QueryAsync<Music>("select * from Music");
+            var playlists = await connection.QueryAsync<Playlist>("select * from Playlist");
+            var musicPlaylist = await connection.QueryAsync<MusicPlaylist>("select * from musicPlaylist");
+
+            foreach (var playlist in playlists)
+            {
+                foreach (var music in musicPlaylist)
+                {
+                    if (music.IdPLaylist == playlist.Id)
+                        playlist.Musics.AddRange(musics.Where(x => x.Id == music.IdMusic));
+                }
+            }
+            return playlists;
         }
 
-        public async Task<Playlist> PutPlaylist(Playlist model)
+        public async Task<Playlist> GetPlaylistById(int id)
         {
-            throw new NotImplementedException();
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            var playlist = await connection.QuerySingleAsync<Playlist>("select * from playlist");
+            return playlist;
         }
-        public async Task<Playlist> DeletePlaylist(int id)
+
+        public async Task<string> PostPlaylist(CreatePlaylistViewModel model)
         {
-            throw new NotImplementedException();
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            var playlist = await connection.QueryAsync<Playlist>($"select * from playlist where nome = '{model.Nome}'");
+            if (playlist.Any())
+                return "Nome da playlist já existe.";
+            await connection.ExecuteAsync($"insert into playlist (Nome,IdUsuario,Publica) values ('{model.Nome}',{model.IdUsuario},{model.Publica})");
+            int idPlaylist = await connection.QuerySingleAsync<int>($"SELECT Id from playlist where nome = '{model.Nome}';");
+            if (model.IdMusics != null)
+            {
+                foreach (var idMusic in model.IdMusics)
+                {
+                    if (idMusic == 0) break;
+                    await connection.ExecuteAsync($"insert into musicPlaylist (IdMusic,IdPlaylist) values ({idPlaylist},{idMusic})");
+                }
+            }
+            //string idNewPlaylist = await connection.QuerySingleAsync<int>("select max(id) from playlist");
+            return idPlaylist.ToString();
+        }
+
+        public async Task<string> IncludeMusicToPlaylist(int idMusic, int idPlaylist)
+        {
+            using var connection = new MySqlConnection(databaseConfig.Name);
+            await connection.ExecuteAsync($"insert into musicplaylist (idMusic,idPlaylist) values ({idMusic},{idPlaylist})");
+
+            return "Incluido com sucesso.";
         }
     }
 }

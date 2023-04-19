@@ -8,32 +8,28 @@ namespace CatolicoCantorAPI.Implementation;
 public class PlaylistManager : IPlaylistManager
 {
     readonly IPlaylistRepository repository;
-    readonly IMapper mapper;
-    public PlaylistManager(IPlaylistRepository repository, IMapper mapper)
+    public PlaylistManager(IPlaylistRepository repository)
     {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
-
-    public async Task<List<PlaylistGet>> GetAllPlaylists() => mapper.Map<List<PlaylistGet>>(await repository.GetAllPlaylists());
-
-    public async Task<PlaylistGet> GetPlaylistById(int id) => mapper.Map<PlaylistGet>(await repository.GetPlaylistById(id));
-
-    public async Task<PlaylistGet> PostPlaylist(CreatePlaylistViewModel model)
+    public async Task<IEnumerable<Playlist>> GetAllPlaylists()
     {
-        var category = mapper.Map<Playlist>(model);
-
-        var retorno = mapper.Map<PlaylistGet>(await repository.PostPlaylist(category));
-        return retorno;
+        return await repository.GetAllPlaylists();
     }
 
-    public async Task<PlaylistGet> PutPlaylist(CreatePlaylistViewModel model)
+    public async Task<Playlist> GetPlaylistById(int id)
     {
-        throw new NotImplementedException();
+        return await repository.GetPlaylistById(id);
     }
-    public async Task<PlaylistGet> DeletePlaylist(int id)
+
+    public async Task<string> PostPlaylist(CreatePlaylistViewModel model)
     {
-        throw new NotImplementedException();
+        return await repository.PostPlaylist(model);
+    }
+
+    public async Task<string> IncludeMusicToPlaylist(int idMusic, int idPlaylist)
+    {
+        return await repository.IncludeMusicToPlaylist(idMusic,idPlaylist);
     }
 }

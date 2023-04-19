@@ -9,7 +9,7 @@ public class MusicManager : IMusicManager
 {
     readonly IMusicRepository repository;
     readonly IMapper mapper;
-    public MusicManager(IMusicRepository repository, IMapper mapper)
+    public MusicManager(IMusicRepository repository)
     {
         this.repository = repository;
         this.mapper = mapper;
@@ -27,6 +27,27 @@ public class MusicManager : IMusicManager
 
     public async Task<string> PostMusic(CreateMusicViewModel model)
     {
+        model.Youtube = YoutubeValidate(model.Youtube);
+        model.Letra = LetrasValidate(model.Letra);
+        model.Cifra = CifrasValidate(model.Cifra);
         return await repository.PostMusic(model);
+    }
+
+    public string YoutubeValidate(string link)
+    {
+        var v = link.Split("v=");
+        if (v[1].Contains("&"))
+            return  v[1].Split("&")[0].ToString();
+        return v[1].ToString();
+    }
+
+    public string LetrasValidate(string link)
+    {
+        return link.Split(".br/")[1].ToString();
+    }
+
+    public string CifrasValidate(string link)
+    {
+        return link.Split(".br/")[1].ToString();
     }
 }

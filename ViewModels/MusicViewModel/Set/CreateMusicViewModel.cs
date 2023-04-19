@@ -12,6 +12,6 @@ namespace CatolicoCantorAPI.ViewModels.Music.Set
         public string? Cifra { get; set; }
         public string? Youtube { get; set; }
         public string? Tags { get; set; }
-        public List<int> Categories { get; set; }
+        public List<Category> Categories { get; set; }
     }
 }
