@@ -1,6 +1,7 @@
 ﻿using CatolicoCantorAPI.Data;
 using CatolicoCantorAPI.Interfaces;
 using CatolicoCantorAPI.Models;
+using CatolicoCantorAPI.ViewModels.Music.Set;
 using CatolicoCantorAPI.ViewModels.Playlist.Set;
 using CatolicoCantorAPI.ViewModels.PlaylistViewModel.Get;
 using Dapper;
@@ -60,10 +61,15 @@ namespace CatolicoCantorAPI.Repository
             //string idNewPlaylist = await connection.QuerySingleAsync<int>("select max(id) from playlist");
             return idPlaylist.ToString();
         }
-
+            
         public async Task<string> IncludeMusicToPlaylist(int idMusic, int idPlaylist)
         {
             using var connection = new MySqlConnection(databaseConfig.Name);
+            var musicPlaylist = await connection.QueryAsync<List<IncludeMusicPlaylist>>($"select idMusic, idPlaylist from musicPlaylist where idMusic = {idMusic} and idPlaylist = {idPlaylist}");
+            if(musicPlaylist.Any())
+            {
+                return "já existe.";
+            }
             await connection.ExecuteAsync($"insert into musicplaylist (idMusic,idPlaylist) values ({idMusic},{idPlaylist})");
 
             return "Incluido com sucesso.";
